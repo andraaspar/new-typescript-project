@@ -40,6 +40,8 @@ You may need to resolve some `EPEERINVALID` dependency conflicts. Usually `npm i
 
 ## Download dependencies
 
+This will download all libraries referenced via Bower, and put the code in the `lib` folder.
+
 ```
 grunt update
 ```
