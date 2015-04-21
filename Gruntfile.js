@@ -129,12 +129,12 @@ module.exports = function(grunt) {
 						compress: true
 					},
 					files: {
-						'<%= BUILD_FOLDER %><%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
 					}
 				},
 				debug: {
 					files: {
-						'<%= BUILD_FOLDER %><%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
 					}
 				},
 				tests: {
