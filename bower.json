@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "build",
+    "lib",
+    "node_modules",
+    "test",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "devDependencies": {
+    "berek": "andraaspar/berek#v1.6"
+  }
+}

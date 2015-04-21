@@ -1,7 +1,7 @@
-/// <reference path='../../lib/illa/_module.ts'/>
-/// <reference path='../../lib/illa/Log.ts'/>
+/// <reference path='../../../lib/illa/_module.ts'/>
+/// <reference path='../../../lib/illa/Log.ts'/>
 
-/// <reference path='../../lib/jQuery.d.ts'/>
+/// <reference path='../../../lib/jQuery.d.ts'/>
 
 /// <reference path='../lodash.d.ts'/>
 

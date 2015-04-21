@@ -3,82 +3,192 @@ module.exports = function(grunt) {
 	
 	grunt.initConfig((function() {
 		
-		var TEST_COUNT = 1;
+		// Config template, completed by JS below
 		
 		var config = {
-			CSS_NAME: 'desktop',
-			JS_NAME: 'script',
 			
+			// Variables to check
+			
+			CSS_NAME: 'desktop',
+			CSS_PATH: '/style/',
+			JS_NAME: 'script',
+			JS_PATH: '/script/',
+			JS_TO_CONCAT: [
+				'<%= SRC_FOLDER %>/concat/html5shiv-printshiv.min.js',
+				'<%= SRC_FOLDER %>/concat/respond.min.js',
+				'<%= SRC_FOLDER %>/concat/jquery-1.11.2.min.js',
+				'<%= MINIFIED_JS_IN_TEMP %>'
+			],
+			MAIN_LESS: '<%= SRC_FOLDER %>/less/_desktop.less',
+			MAIN_TS: '<%= SRC_FOLDER %>/ts/main/Main.ts',
+			TEST_COUNT: 0,
+			
+			// Other variables
+			
+			BUILD_FOLDER: 'build',
+			JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.js', 
+			KAPOCS_PATTERN: ['**', '!_INFO'],
+			MINIFIED_JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.min.js', 
+			SRC_FOLDER: 'src',
+			TMP_FOLDER: 'tmp',
+			
+			// Targets
+			
+			appcache: {
+				compile: {
+					options: {
+						basePath: '<%= BUILD_FOLDER %>'
+					},
+					dest: '<%= BUILD_FOLDER %>/index.appcache',
+					cache: {
+						patterns: ['<%= BUILD_FOLDER %>/**', '!<%= BUILD_FOLDER %>/*.html']
+					},
+					network: '*'
+				}
+			},
 			clean: {
-				tests: [
-					'build',
-					'tmp'
+				compile: [
+					'<%= BUILD_FOLDER %>',
+					'<%= TMP_FOLDER %>'
 				]
 			},
+			concat: {
+				compile: {
+					src: '<%= JS_TO_CONCAT %>',
+					dest: '<%= TMP_FOLDER %>/_asset_templates<%= JS_PATH %><%= JS_NAME %>.min.js'
+				}
+			},
+			copy: {
+				compile: {
+					files:[{
+						expand: true,
+						cwd: '<%= SRC_FOLDER %>/_dropin',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/_dropin',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
+					}]
+				},
+				debug: {
+					files: [
+						{src: ['<%= JS_IN_TEMP %>'], dest: '<%= MINIFIED_JS_IN_TEMP %>'}
+					]
+				}
+			},
 			kapocs: {
-				tests: {
+				compile: {
 					assets: [{
 						expand: true,
-						cwd: 'src/assets',
+						cwd: '<%= SRC_FOLDER %>/_assets',
 						dot: true,
-						src: ['**'],
-						dest: 'build'
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/_assets',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
 					}],
 					assetTemplates: [{
 						expand: true,
-						cwd: 'src/asset_templates',
+						cwd: '<%= SRC_FOLDER %>/_asset_templates',
 						dot: true,
-						src: ['**'],
-						dest: 'build'
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
 					}, {
 						expand: true,
-						cwd: 'tmp/asset_templates',
+						cwd: '<%= TMP_FOLDER %>/_asset_templates',
 						dot: true,
-						src: ['**'],
-						dest: 'build'
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
 					}],
 					templates: [{
 						expand: true,
-						cwd: 'src/templates',
+						cwd: '<%= SRC_FOLDER %>/_templates',
 						dot: true,
-						src: ['**'],
-						dest: 'build'
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/_templates',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_FOLDER %>'
 					}]
 				}
 			},
 			less: {
+				compile: {
+					options: {
+						compress: true
+					},
+					files: {
+						'<%= BUILD_FOLDER %><%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
+					}
+				},
+				debug: {
+					files: {
+						'<%= BUILD_FOLDER %><%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
+					}
+				},
 				tests: {
-					files: {}
+					files: {/* Tests will be injected here. */}
 				}
 			},
 			typescript: {
+				compile: {
+					files: {
+						'<%= JS_IN_TEMP %>': '<%= MAIN_TS %>'
+					}
+				},
 				tests: {
-					files: {}
+					files: {/* Tests will be injected here. */}
 				}
 			},
 			sas: {
-				update: {}
+				update: {/* No options required. */}
 			},
 			shell: {
 				update: {
-					command: ['bower prune', 'bower update', 'bower install'].join('&&')
+					command: [
+						'bower prune',
+						'bower update',
+						'bower install'
+					].join('&&')
+				}
+			},
+			uglify: {
+				compile: {
+					files: {
+						'<%= MINIFIED_JS_IN_TEMP %>': ['<%= JS_IN_TEMP %>']
+					}
 				}
 			}
 		};
 		
-		for (var i = 1; i <= TEST_COUNT; i++) {
-			var folderPath = 'tmp/asset_templates/test' + i;
-			var jsPath = folderPath + '/script/<%= JS_NAME %>.js';
-			var cssPath = folderPath + '/style/<%= CSS_NAME %>.css';
+		// Inject tests
+		
+		for (var i = 1; i <= config.TEST_COUNT; i++) {
+			var folderPath = '<%= TMP_FOLDER %>/_asset_templates/test' + i;
+			var jsPath = folderPath + '/script/test.js';
+			var cssPath = folderPath + '/style/test.css';
 			
-			config.less.tests.files[cssPath] = 'test/test' + i + '/_style.less';
+			config.less.tests.files[cssPath] = 'test/test' + i + '/less/_desktop.less';
 			config.typescript.tests.files[jsPath] = 'test/test' + i + '/Main.ts';
 		}
 		
 		return config;
 	})());
 	
+	grunt.loadNpmTasks('grunt-appcache');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -87,7 +197,33 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-typescript');
 	
-	grunt.registerTask('compile', ['clean:compile', 'typescript:compile', 'uglify:compile', 'copy:compile', 'less:compile', 'copy:compile2', 'kapocs:compile']);
-	grunt.registerTask('update', ['shell:update', 'sas:update']);
-	grunt.registerTask('default', ['compile']);
+	grunt.registerTask('compile', [
+		'clean:compile',
+		'copy:compile',
+		'typescript:compile',
+		'typescript:tests',
+		'uglify:compile',
+		'concat',
+		'less:compile',
+		'kapocs:compile',
+		'appcache:compile'
+	]);
+	grunt.registerTask('debug', [
+		'clean:compile',
+		'copy:compile',
+		'typescript:compile',
+		'typescript:tests',
+		'copy:debug',
+		'concat',
+		'less:debug',
+		'kapocs:compile',
+		'appcache:compile'
+	]);
+	grunt.registerTask('update', [
+		'shell:update',
+		'sas:update'
+	]);
+	grunt.registerTask('default', [
+		'compile'
+	]);
 };

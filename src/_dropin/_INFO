@@ -1,0 +1,3 @@
+This is where .htaccess goes (not relevant for caching; does NOT refer to assets).
+
+You could also put jQuery here (IS cached - has version in file name so does NOT need renaming; does NOT refer to assets).
