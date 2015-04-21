@@ -36,7 +36,7 @@ npm-check-updates -u
 npm install
 ```
 
-You may need to resolve some dependency conflicts. Usually `npm install --save-dev <name>@<version>` does the trick.
+You may need to resolve some `EPEERINVALID` dependency conflicts. Usually `npm install --save-dev <name>@<version>` does the trick.
 
 ## Download dependencies
 
