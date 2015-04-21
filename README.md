@@ -2,6 +2,13 @@
 
 The proper way to set up a TypeScript project with Eclipse. Or without.
 
+## Install prerequisites
+
+1. [Node.js](https://nodejs.org/)
+2. [grunt-cli](https://github.com/gruntjs/grunt-cli) (globally)
+3. [npm-check-updates](https://github.com/tjunnone/npm-check-updates) (globally)
+4. [Bower](http://bower.io/) (globally)
+
 ## Clone
 
 1. Create a new repo for your project, and clone it into your Eclipse workspace (maybe using [TortoiseGit](https://github.com/TortoiseGit/TortoiseGit)).
@@ -10,19 +17,12 @@ The proper way to set up a TypeScript project with Eclipse. Or without.
 
 ## Set up Eclipse project
 
-1. Install [Node.js](https://nodejs.org/), [grunt-cli](https://github.com/gruntjs/grunt-cli) (globally), [Bower](http://bower.io/) (globally).
-2. In Eclipse, install [Palantir’s TypeScript plugin](https://github.com/palantir/eclipse-typescript).
-3. Create a new `Static Web Project`, matching the name of the folder you cloned into, and set the `web content folder name` to `build`.
-4. Do `Project > Right click > Configure > Enable TypeScript Builder`.
-5. In `Project > Properties > TypeScript` set `Source folder(s)` to `lib;src;test`.
+1. Install [Palantir’s TypeScript plugin](https://github.com/palantir/eclipse-typescript).
+2. Create a new `Static Web Project`, matching the name of the folder you cloned into, and set the `web content folder name` to `build`.
+3. Do `Project > Right click > Configure > Enable TypeScript Builder`.
+4. In `Project > Properties > TypeScript` set `Source folder(s)` to `lib;src;test`.
 
 ## Install NPM dependencies
-
-### Install `npm-check-updates`
-
-```
-npm install npm-check-updates -g
-```
 
 ### Update package versions to latest
 
