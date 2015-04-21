@@ -1,4 +1,5 @@
 {
+  "name": "new-typescript-project",
   "private": true,
   "ignore": [
     "**/.*",
