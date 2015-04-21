@@ -17,8 +17,10 @@ module.exports = function(grunt) {
 				'<%= SRC_FOLDER %>/concat/html5shiv-printshiv.min.js',
 				'<%= SRC_FOLDER %>/concat/respond.min.js',
 				'<%= SRC_FOLDER %>/concat/jquery-1.11.2.min.js',
+				'<%= LODASH_IN_TEMP %>',
 				'<%= MINIFIED_JS_IN_TEMP %>'
 			],
+			LODASH_INCLUDE: ['cloneDeep', 'isEqual'],
 			MAIN_LESS: '<%= SRC_FOLDER %>/less/_desktop.less',
 			MAIN_TS: '<%= SRC_FOLDER %>/ts/main/Main.ts',
 			TEST_COUNT: 0,
@@ -28,6 +30,7 @@ module.exports = function(grunt) {
 			BUILD_FOLDER: 'build',
 			JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.js', 
 			KAPOCS_PATTERN: ['**', '!_INFO'],
+			LODASH_IN_TEMP: '<%= TMP_FOLDER %>/script/lodash.js',
 			MINIFIED_JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.min.js', 
 			SRC_FOLDER: 'src',
 			TMP_FOLDER: 'tmp',
@@ -141,6 +144,16 @@ module.exports = function(grunt) {
 					files: {/* Tests will be injected here. */}
 				}
 			},
+			lodash: {
+				compile: {
+					options: {
+						// modern, strict, compat
+						modifier: 'compat',
+						include: '<%= LODASH_INCLUDE %>'
+					},
+					dest: '<%= LODASH_IN_TEMP %>'
+				}
+			},
 			typescript: {
 				compile: {
 					files: {
@@ -193,6 +206,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-kapocs');
+	grunt.loadNpmTasks('grunt-lodash');
 	grunt.loadNpmTasks('grunt-sas');
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-typescript');
@@ -203,7 +217,8 @@ module.exports = function(grunt) {
 		'typescript:compile',
 		'typescript:tests',
 		'uglify:compile',
-		'concat',
+		'lodash:compile',
+		'concat:compile',
 		'less:compile',
 		'kapocs:compile',
 //		'appcache:compile',
@@ -214,7 +229,8 @@ module.exports = function(grunt) {
 		'typescript:compile',
 		'typescript:tests',
 		'copy:debug',
-		'concat',
+		'lodash:compile',
+		'concat:compile',
 		'less:debug',
 		'kapocs:compile',
 //		'appcache:compile',
