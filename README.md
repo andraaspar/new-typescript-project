@@ -81,7 +81,8 @@ You may want to uncomment some lines in there.
 
 1. Review `Variables to check` section near the top.
 2. Check `compile` task near the bottom to see if it does what you want.
-3. Other customizations?
+3. Maybe uncomment `appcache` related parts (also change `index.html`)?
+4. Other customizations?
 
 ## Replace `README.md` & start coding!
 
