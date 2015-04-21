@@ -34,18 +34,18 @@ module.exports = function(grunt) {
 			
 			// Targets
 			
-			appcache: {
-				compile: {
-					options: {
-						basePath: '<%= BUILD_FOLDER %>'
-					},
-					dest: '<%= BUILD_FOLDER %>/index.appcache',
-					cache: {
-						patterns: ['<%= BUILD_FOLDER %>/**', '!<%= BUILD_FOLDER %>/*.html']
-					},
-					network: '*'
-				}
-			},
+//			appcache: {
+//				compile: {
+//					options: {
+//						basePath: '<%= BUILD_FOLDER %>'
+//					},
+//					dest: '<%= BUILD_FOLDER %>/index.appcache',
+//					cache: {
+//						patterns: ['<%= BUILD_FOLDER %>/**', '!<%= BUILD_FOLDER %>/*.html']
+//					},
+//					network: '*'
+//				}
+//			},
 			clean: {
 				compile: [
 					'<%= BUILD_FOLDER %>',
@@ -186,7 +186,7 @@ module.exports = function(grunt) {
 		return config;
 	})());
 	
-	grunt.loadNpmTasks('grunt-appcache');
+//	grunt.loadNpmTasks('grunt-appcache');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
@@ -206,7 +206,7 @@ module.exports = function(grunt) {
 		'concat',
 		'less:compile',
 		'kapocs:compile',
-		'appcache:compile'
+//		'appcache:compile',
 	]);
 	grunt.registerTask('debug', [
 		'clean:compile',
@@ -217,7 +217,7 @@ module.exports = function(grunt) {
 		'concat',
 		'less:debug',
 		'kapocs:compile',
-		'appcache:compile'
+//		'appcache:compile',
 	]);
 	grunt.registerTask('update', [
 		'shell:update',

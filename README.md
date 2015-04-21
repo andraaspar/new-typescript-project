@@ -1,5 +1,7 @@
 # New TypeScript project
 
+The proper way to set up a TypeScript project with Eclipse. Or without.
+
 ## Clone
 
 1. Create a new repo for your project, and clone it into your Eclipse workspace (maybe using [TortoiseGit](https://github.com/TortoiseGit/TortoiseGit)).
@@ -8,7 +10,7 @@
 
 ## Set up Eclipse project
 
-1. Install [Node.js](https://nodejs.org/), [grunt-cli](https://github.com/gruntjs/grunt-cli), [Bower](http://bower.io/).
+1. Install [Node.js](https://nodejs.org/), [grunt-cli](https://github.com/gruntjs/grunt-cli) (globally), [Bower](http://bower.io/) (globally).
 2. In Eclipse, install [Palantir’s TypeScript plugin](https://github.com/palantir/eclipse-typescript).
 3. Create a new `Static Web Project`, matching the name of the folder you cloned into, and set the `web content folder name` to `build`.
 4. Do `Project > Right click > Configure > Enable TypeScript Builder`.
