@@ -103,6 +103,10 @@ You may want to uncomment some lines in there.
 1. Provide the `name` of your project.
 2. Add some other dependencies?
 
+## Update `LICENSE` file
+
+Put your own name in there, or replace the file altogether.
+
 ## Update `Gruntfile.js`
 
 1. Review `Variables to check` section near the top.
