@@ -3,6 +3,13 @@ module.exports = function(grunt) {
 	
 	grunt.initConfig((function() {
 		
+		var MINIFIED_FILES = {
+			'<%= MINIFIED_JS_IN_TEMP %>': [
+				'<%= SRC_FOLDER %>/concat/jquery-1.11.3.min.js',
+				'<%= MINIFIED_JS_IN_TEMP %>'
+			]
+		};
+		
 		// Config template, completed by JS below
 		
 		var config = {
@@ -13,52 +20,31 @@ module.exports = function(grunt) {
 			CSS_PATH: '/style/',
 			JS_NAME: 'script',
 			JS_PATH: '/script/',
-			JS_TO_CONCAT: [
-				'<%= SRC_FOLDER %>/concat/html5shiv-printshiv.min.js',
-				'<%= SRC_FOLDER %>/concat/respond.min.js',
-				'<%= SRC_FOLDER %>/concat/jquery-1.11.2.min.js',
-				'<%= LODASH_IN_TEMP %>',
-				'<%= MINIFIED_JS_IN_TEMP %>'
-			],
-			LODASH_INCLUDE: ['cloneDeep', 'isEqual'],
-			MAIN_LESS: '<%= SRC_FOLDER %>/less/_desktop.less',
+			MAIN_SASS: '<%= SRC_FOLDER %>/sass/desktop.sass',
 			MAIN_TS: '<%= SRC_FOLDER %>/ts/main/Main.ts',
-			TEST_COUNT: 0,
 			
 			// Other variables
 			
 			BUILD_FOLDER: 'build',
+			BUILD_TEST_FOLDER: 'build/test',
 			JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.js', 
 			KAPOCS_PATTERN: ['**', '!_INFO'],
-			LODASH_IN_TEMP: '<%= TMP_FOLDER %>/script/lodash.js',
 			MINIFIED_JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.min.js', 
 			SRC_FOLDER: 'src',
 			TMP_FOLDER: 'tmp',
 			
 			// Targets
 			
-//			appcache: {
-//				compile: {
-//					options: {
-//						basePath: '<%= BUILD_FOLDER %>'
-//					},
-//					dest: '<%= BUILD_FOLDER %>/index.appcache',
-//					cache: {
-//						patterns: ['<%= BUILD_FOLDER %>/**', '!<%= BUILD_FOLDER %>/*.html']
-//					},
-//					network: '*'
-//				}
-//			},
 			clean: {
 				compile: [
 					'<%= BUILD_FOLDER %>',
 					'<%= TMP_FOLDER %>'
-				]
+				],
+				update: ['lib']
 			},
 			concat: {
-				compile: {
-					src: '<%= JS_TO_CONCAT %>',
-					dest: '<%= TMP_FOLDER %>/_asset_templates<%= JS_PATH %><%= JS_NAME %>.min.js'
+				debug: {
+					files: MINIFIED_FILES
 				}
 			},
 			copy: {
@@ -77,10 +63,40 @@ module.exports = function(grunt) {
 						dest: '<%= BUILD_FOLDER %>'
 					}]
 				},
-				debug: {
-					files: [
-						{src: ['<%= JS_IN_TEMP %>'], dest: '<%= MINIFIED_JS_IN_TEMP %>'}
-					]
+				update: {
+					files: [{
+						expand: true,
+						cwd: 'bower_components/berek/src',
+						src: ['**'],
+						dest: 'lib'
+					}, {
+						expand: true,
+						cwd: 'bower_components/illa/src',
+						dot: true,
+						src: '**',
+						dest: 'lib'
+					}, {
+						expand: true,
+						cwd: 'bower_components/node-d-ts/src',
+						dot: true,
+						src: '**',
+						dest: 'lib'
+					}, {
+						expand: true,
+						cwd: 'node_modules/typescript/bin',
+						dot: true,
+						src: 'lib.core.es6.d.ts',
+						dest: 'lib'
+					}]
+				},
+				tests: {
+					files: [{
+						expand: true,
+						cwd: 'test/_dropin',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}]
 				}
 			},
 			kapocs: {
@@ -124,50 +140,59 @@ module.exports = function(grunt) {
 						src: '<%= KAPOCS_PATTERN %>',
 						dest: '<%= BUILD_FOLDER %>'
 					}]
+				},
+				tests: {
+					assets: [{
+						expand: true,
+						cwd: 'test/_assets',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}],
+					assetTemplates: [{
+						expand: true,
+						cwd: 'test/_asset_templates',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}],
+					templates: [{
+						expand: true,
+						cwd: 'test/_templates',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}]
 				}
 			},
-			less: {
+			sass: {
 				compile: {
 					options: {
-						compress: true
+						outputStyle: 'compressed'
 					},
 					files: {
-						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SASS %>'
 					}
 				},
 				debug: {
-					files: {
-						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_LESS %>'
-					}
-				},
-				tests: {
-					files: {/* Tests will be injected here. */}
-				}
-			},
-			lodash: {
-				compile: {
 					options: {
-						// modern, strict, compat
-						modifier: 'compat',
-						include: '<%= LODASH_INCLUDE %>'
+						outputStyle: 'expanded'
 					},
-					dest: '<%= LODASH_IN_TEMP %>'
-				}
-			},
-			typescript: {
-				compile: {
 					files: {
-						'<%= JS_IN_TEMP %>': '<%= MAIN_TS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SASS %>'
 					}
-				},
-				tests: {
-					files: {/* Tests will be injected here. */}
 				}
-			},
-			sas: {
-				update: {/* No options required. */}
 			},
 			shell: {
+				compileTs: {
+					command: '"node_modules/.bin/tsc" "<%= MAIN_TS %>" -out "<%= JS_IN_TEMP %>"'
+				},
+				compileTsTest: {
+					command: '"node_modules/.bin/tsc" --noLib --out "tmp/_asset_templates/test/script/tests.js" "test/ts/tests/Main.ts"'
+				},
+				jasmine: {
+					command: '"node_modules/.bin/jasmine"'
+				},
 				update: {
 					command: [
 						'bower prune',
@@ -178,66 +203,52 @@ module.exports = function(grunt) {
 			},
 			uglify: {
 				compile: {
-					files: {
-						'<%= MINIFIED_JS_IN_TEMP %>': ['<%= JS_IN_TEMP %>']
-					}
+					options: {
+						sourceMap: true,
+						preserveComments: 'some'
+					},
+					files: MINIFIED_FILES
 				}
 			}
 		};
 		
-		// Inject tests
-		
-		for (var i = 1; i <= config.TEST_COUNT; i++) {
-			var folderPath = '<%= TMP_FOLDER %>/_asset_templates/test' + i;
-			var jsPath = folderPath + '/script/test.js';
-			var cssPath = folderPath + '/style/test.css';
-			
-			config.less.tests.files[cssPath] = 'test/test' + i + '/less/_desktop.less';
-			config.typescript.tests.files[jsPath] = 'test/test' + i + '/Main.ts';
-		}
-		
 		return config;
 	})());
 	
-//	grunt.loadNpmTasks('grunt-appcache');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-kapocs');
-	grunt.loadNpmTasks('grunt-lodash');
-	grunt.loadNpmTasks('grunt-sas');
+	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-shell');
-	grunt.loadNpmTasks('grunt-typescript');
 	
 	grunt.registerTask('compile', [
 		'clean:compile',
 		'copy:compile',
-		'typescript:compile',
-		'typescript:tests',
+		'shell:compileTs',
+		'shell:compileTsTest',
+		'shell:jasmine',
 		'uglify:compile',
-		'lodash:compile',
-		'concat:compile',
-		'less:compile',
-		'kapocs:compile',
-//		'appcache:compile',
+		'sass:compile',
+		'sass:tests',
+		'kapocs:compile'
 	]);
 	grunt.registerTask('debug', [
 		'clean:compile',
 		'copy:compile',
-		'typescript:compile',
-		'typescript:tests',
-		'copy:debug',
-		'lodash:compile',
-		'concat:compile',
-		'less:debug',
-		'kapocs:compile',
-//		'appcache:compile',
+		'shell:compileTs',
+		'shell:compileTsTest',
+		'shell:jasmine',
+		'concat:debug',
+		'sass:debug',
+		'sass:tests',
+		'kapocs:compile'
 	]);
 	grunt.registerTask('update', [
+		'clean:update',
 		'shell:update',
-		'sas:update'
+		'copy:update'
 	]);
 	grunt.registerTask('default', [
 		'compile'

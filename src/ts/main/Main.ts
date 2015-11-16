@@ -4,8 +4,6 @@
 
 /// <reference path='../../../lib/jQuery.d.ts'/>
 
-/// <reference path='../lodash.d.ts'/>
-
 module main {
 	export class Main {
 
@@ -23,20 +21,6 @@ module main {
 			jQuery('body').prepend(illa.Arrkup.createString([
 				['h1', 'Awesome!']
 			]));
-			
-			illa.Log.info('Testing lodash...');
-
-			var users = [
-				{ user: 'barney', active: true, credits: 500 },
-				{ user: 'fred', active: false, credits: 750 }
-			];
-
-			var clone = _.cloneDeep(users);
-			
-			illa.Log.info('Original:', users);
-			illa.Log.info('Clone:', clone);
-			illa.Log.info('The clone[0] is NOT the same as the original[0]:', clone[0] !== users[0]);
-			illa.Log.info('_.isEqual:', _.isEqual(clone, users));
 			
 			illa.Log.info('Done.');
 		}
