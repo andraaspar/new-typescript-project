@@ -77,22 +77,33 @@ module.exports = function(grunt) {
 						dest: 'lib'
 					}, {
 						expand: true,
+						cwd: 'bower_components/jquery-d-ts/src',
+						src: ['**'],
+						dest: 'lib'
+					}, {
+						expand: true,
 						cwd: 'bower_components/node-d-ts/src',
 						dot: true,
 						src: '**',
 						dest: 'lib'
 					}, {
 						expand: true,
-						cwd: 'node_modules/typescript/bin',
+						cwd: 'node_modules/typescript/lib',
 						dot: true,
 						src: 'lib.core.es6.d.ts',
 						dest: 'lib'
 					}]
 				},
-				tests: {
+				test: {
 					files: [{
 						expand: true,
 						cwd: 'test/_dropin',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/test/_dropin',
 						dot: true,
 						src: '<%= KAPOCS_PATTERN %>',
 						dest: '<%= BUILD_TEST_FOLDER %>'
@@ -141,10 +152,16 @@ module.exports = function(grunt) {
 						dest: '<%= BUILD_FOLDER %>'
 					}]
 				},
-				tests: {
+				test: {
 					assets: [{
 						expand: true,
 						cwd: 'test/_assets',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/test/_assets',
 						dot: true,
 						src: '<%= KAPOCS_PATTERN %>',
 						dest: '<%= BUILD_TEST_FOLDER %>'
@@ -155,10 +172,22 @@ module.exports = function(grunt) {
 						dot: true,
 						src: '<%= KAPOCS_PATTERN %>',
 						dest: '<%= BUILD_TEST_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/test/_asset_templates',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
 					}],
 					templates: [{
 						expand: true,
 						cwd: 'test/_templates',
+						dot: true,
+						src: '<%= KAPOCS_PATTERN %>',
+						dest: '<%= BUILD_TEST_FOLDER %>'
+					}, {
+						expand: true,
+						cwd: '<%= TMP_FOLDER %>/test/_templates',
 						dot: true,
 						src: '<%= KAPOCS_PATTERN %>',
 						dest: '<%= BUILD_TEST_FOLDER %>'
@@ -188,7 +217,7 @@ module.exports = function(grunt) {
 					command: '"node_modules/.bin/tsc" "<%= MAIN_TS %>" -out "<%= JS_IN_TEMP %>"'
 				},
 				compileTsTest: {
-					command: '"node_modules/.bin/tsc" --noLib --out "tmp/_asset_templates/test/script/tests.js" "test/ts/tests/Main.ts"'
+					command: '"node_modules/.bin/tsc" --noLib --out "tmp/test/_asset_templates/script/tests.js" "test/ts/tests/Main.ts"'
 				},
 				jasmine: {
 					command: '"node_modules/.bin/jasmine"'
@@ -226,24 +255,26 @@ module.exports = function(grunt) {
 	grunt.registerTask('compile', [
 		'clean:compile',
 		'copy:compile',
+		'copy:test',
 		'shell:compileTs',
 		'shell:compileTsTest',
-		'shell:jasmine',
 		'uglify:compile',
 		'sass:compile',
-		'sass:tests',
-		'kapocs:compile'
+		'kapocs:compile',
+		'kapocs:test',
+		'shell:jasmine'
 	]);
 	grunt.registerTask('debug', [
 		'clean:compile',
 		'copy:compile',
+		'copy:test',
 		'shell:compileTs',
 		'shell:compileTsTest',
-		'shell:jasmine',
 		'concat:debug',
 		'sass:debug',
-		'sass:tests',
-		'kapocs:compile'
+		'kapocs:compile',
+		'kapocs:test',
+		'shell:jasmine'
 	]);
 	grunt.registerTask('update', [
 		'clean:update',

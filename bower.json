@@ -12,6 +12,7 @@
     "package.json"
   ],
   "devDependencies": {
-    "berek": "andraaspar/berek#v1.11"
+    "berek": "andraaspar/berek#v1.11",
+    "node-d-ts": "andraaspar/node-d-ts#v2"
   }
 }
