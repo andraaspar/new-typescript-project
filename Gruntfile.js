@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 		var MINIFIED_FILES = {
 			'<%= MINIFIED_JS_IN_TEMP %>': [
 				'<%= SRC_FOLDER %>/concat/jquery-1.11.3.min.js',
-				'<%= MINIFIED_JS_IN_TEMP %>'
+				'<%= JS_IN_TEMP %>'
 			]
 		};
 		
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 			BUILD_TEST_FOLDER: 'build/test',
 			JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.js', 
 			KAPOCS_PATTERN: ['**', '!_INFO'],
-			MINIFIED_JS_IN_TEMP: '<%= TMP_FOLDER %>/script/<%= JS_NAME %>.min.js', 
+			MINIFIED_JS_IN_TEMP: '<%= TMP_FOLDER %>/_asset_templates/script/<%= JS_NAME %>.min.js', 
 			SRC_FOLDER: 'src',
 			TMP_FOLDER: 'tmp',
 			
