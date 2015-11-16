@@ -4,19 +4,15 @@
 
 Supported libraries (you can add / remove what you need):
 
-* [html5shiv-printshiv](https://github.com/aFarkas/html5shiv)
-* [respond.js](https://github.com/scottjehl/Respond)
 * [jQuery](http://jquery.com/)
-* [lodash](https://lodash.com/)
-* [normalize.css](http://necolas.github.io/normalize.css/)
 
 Supported features (you can customize it):
 
-* Appcache (disabled by default)
 * Cache busting by `grunt-kapocs`
 * Concatenation of scripts into a single file
 * Debug mode: readable CSS & JS
-* LESS CSS
+* Jasmine
+* SCSS
 * TypeScript (obviously)
 * UglifyJS (disabled when compiling with `grunt debug`)
 
@@ -45,13 +41,13 @@ Supported features (you can customize it):
 ### Update package versions to latest
 
 ```
-npm-check-updates -u
+ncu -u
 ```
 
 ### Install
 
 ```
-npm install
+npm i
 ```
 
 You may need to resolve some `EPEERINVALID` dependency conflicts. Usually `npm install --save-dev <name>@<version>` does the trick.
@@ -111,8 +107,7 @@ Put your own name in there, or replace the file altogether.
 
 1. Review `Variables to check` section near the top.
 2. Check `compile` task near the bottom to see if it does what you want.
-3. Maybe uncomment `appcache` related parts (also change `index.html`)?
-4. Other customizations?
+3. Other customizations?
 
 ## Replace `README.md` & start coding!
 
