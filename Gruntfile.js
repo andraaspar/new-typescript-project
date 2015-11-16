@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			CSS_PATH: '/style/',
 			JS_NAME: 'script',
 			JS_PATH: '/script/',
-			MAIN_SASS: '<%= SRC_FOLDER %>/sass/desktop.sass',
+			MAIN_SCSS: '<%= SRC_FOLDER %>/scss/desktop.scss',
 			MAIN_TS: '<%= SRC_FOLDER %>/ts/main/Main.ts',
 			
 			// Other variables
@@ -200,7 +200,7 @@ module.exports = function(grunt) {
 						outputStyle: 'compressed'
 					},
 					files: {
-						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SASS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SCSS %>'
 					}
 				},
 				debug: {
@@ -208,7 +208,7 @@ module.exports = function(grunt) {
 						outputStyle: 'expanded'
 					},
 					files: {
-						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SASS %>'
+						'<%= TMP_FOLDER %>/_asset_templates<%= CSS_PATH %><%= CSS_NAME %>.css': '<%= MAIN_SCSS %>'
 					}
 				}
 			},
